@@ -76,6 +76,9 @@ module RemoteSyslog
         opts.on("-p", "--dest-port PORT", "Destination syslog port (514)") do |v|
           @agent.destination_port = v
         end
+		opts.on("-t", "--dest-token TOKEN", "Destination log token") do |v|
+		  @agent.destination_token = v
+		end
         opts.on("-D", "--no-detach", "Don't daemonize and detach from the terminal") do
           @no_detach = true
         end
@@ -164,6 +167,7 @@ module RemoteSyslog
 
       @agent.destination_host ||= 'logs.papertrailapp.com'
       @agent.destination_port ||= 514
+	  @agent.destination_token ||= ''
 
       # handle relative paths before Daemonize changes the wd to / and expand wildcards
       @files = @files.flatten.map { |f| File.expand_path(f) }.uniq
@@ -212,6 +216,10 @@ module RemoteSyslog
       if config['destination'] && config['destination']['port']
         @agent.destination_port ||= config['destination']['port']
       end
+
+	  if config['destination'] && config['destination']['token']
+		@agent.destination_token ||= config['destination']['token']
+	  end
 
       if config['hostname']
         @agent.hostname = config['hostname']

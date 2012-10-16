@@ -11,7 +11,7 @@ require 'remote_syslog/tls_endpoint'
 module RemoteSyslog
   class Agent < Servolux::Server
     # Who should we connect to?
-    attr_accessor :destination_host, :destination_port
+    attr_accessor :destination_host, :destination_port, :destination_token
 
     # Should use TLS?
     attr_accessor :tls
@@ -94,14 +94,14 @@ module RemoteSyslog
         if @tls
           max_message_size = 10240
 
-          connection = TlsEndpoint.new(@destination_host, @destination_port,
+          connection = TlsEndpoint.new(@destination_host, @destination_port, @destination_token,
             :client_cert_chain => @client_cert_chain,
             :client_private_key => @client_private_key,
             :server_cert => @server_cert,
             :logger => logger)
         else
           max_message_size = 1024
-          connection = UdpEndpoint.new(@destination_host, @destination_port,
+          connection = UdpEndpoint.new(@destination_host, @destination_port, @destination_token,
             :logger => logger)
         end
 

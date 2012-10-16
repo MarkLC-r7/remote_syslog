@@ -4,9 +4,10 @@ module RemoteSyslog
   class UdpEndpoint
     attr_reader :logger
 
-    def initialize(address, port, options = {})
+    def initialize(address, port, token, options = {})
       @address = address
       @port    = port.to_i
+	  @token   = token
       @socket  = EventMachine.open_datagram_socket('0.0.0.0', 0)
       @logger  = options[:logger] || Logger.new(STDERR)
 
@@ -31,7 +32,7 @@ module RemoteSyslog
     end
 
     def write(value)
-      @socket.send_datagram(value, address, @port)
+      @socket.send_datagram(@token+value, address, @port)
     end
   end
 end
