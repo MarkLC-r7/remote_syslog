@@ -101,7 +101,7 @@ module RemoteSyslog
             :logger => logger)
         else
           max_message_size = 1024
-          connection = UdpEndpoint.new(@destination_host, @destination_port, @destination_token,
+          connection = UdpEndpoint.new(@destination_host, @destination_port,
             :logger => logger)
         end
 

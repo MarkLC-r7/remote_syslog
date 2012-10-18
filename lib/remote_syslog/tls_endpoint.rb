@@ -88,15 +88,15 @@ module RemoteSyslog
     end
 
     def write(value)
-	  finalValue = @token+value
+	  value = "#{@token}#{value}"
       if @connection
         if @queue
           @connection.send_data(@queue.join("\n") + "\n")
           @queue = nil
         end
-        @connection.send_data(finalValue + "\n")
+        @connection.send_data(value + "\n")
       else
-        (@queue ||= []) << finalValue
+        (@queue ||= []) << value
 
         # Make sure our queue does not get to be too big
         @queue.shift if @queue.length > @queue_limit
