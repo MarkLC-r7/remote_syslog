@@ -36,7 +36,7 @@ module RemoteSyslog
     def initialize(address, port, token, options = {})
       @address            = address
       @port               = port.to_i
-	  @token			  = token
+      @token			  = token
       @client_cert_chain  = options[:client_cert_chain]
       @client_private_key = options[:client_private_key]
       @queue_limit        = options[:queue_limit] || 10_000
@@ -88,7 +88,7 @@ module RemoteSyslog
     end
 
     def write(value)
-	  value = "#{@token}#{value}"
+      value = "#{@token}#{value}"
       if @connection
         if @queue
           @connection.send_data(@queue.join("\n") + "\n")
